@@ -1,10 +1,11 @@
 ﻿using ParkingManagementSystemAPI.Models;
 
-namespace ParkingManagementSystemAPI.Services.Repositories
+namespace ParkingManagementSystemAPI.Repositories.Interfaces
 {
     public interface IParkingSlotRepository
     {
-        Task<List<ParkingSlot>> GetAvailableSlots();
+        Task<IEnumerable<ParkingSlot>> GetAllSlots();
+        Task<IEnumerable<ParkingSlot>> GetAvailableSlots();
         Task<ParkingSlot> GetSlotById(int slotId);
         Task<ParkingSlot> UpdateSlot(ParkingSlot slot);
     }

@@ -1,5 +1,10 @@
-﻿using ParkingManagementSystemAPI.Models;
-using ParkingManagementSystemAPI.Services.Repositories;
+﻿using ParkingManagementSystemAPI.Enums;
+using ParkingManagementSystemAPI.Models;
+using ParkingManagementSystemAPI.Repositories.Interfaces;
+using ParkingManagementSystemAPI.Services.Interfaces;
+using ParkingManagementSystemAPI.Services.SlotCompatibilityStrategies.Interfaces;
+using ParkingManagementSystemAPI.Services.SlotCompatibilityStrategies;
+using ParkingManagementSystemAPI.UnitOfWork.Interfaces;
 
 namespace ParkingManagementSystemAPI.Services
 {
@@ -7,29 +12,53 @@ namespace ParkingManagementSystemAPI.Services
     {
         private readonly IParkingSlotRepository _parkingSlotRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IVehicleTypeRepository _vehicleTypeRepository;
 
-        public SlotAssignmentService(IParkingSlotRepository parkingSlotRepository, IUnitOfWork unitOfWork)
+        public SlotAssignmentService(IParkingSlotRepository parkingSlotRepository, IUnitOfWork unitOfWork, 
+            IVehicleTypeRepository vehicleTypeRepository)
         {
             _parkingSlotRepository = parkingSlotRepository;
             _unitOfWork = unitOfWork;
+            this._vehicleTypeRepository = vehicleTypeRepository;
         }
 
-        public int AssignSlot(string vehicleType, List<ParkingSlot> availableSlots)
+        public async Task<int> AssignSlot(string vehicleType, IEnumerable<ParkingSlot> availableSlots)
         {
-            // Implement your slot assignment logic here, prioritizing best-matching slots and handling unavailability
-            // For example:
-            var compatibleSlots = availableSlots.Where(s => s.SlotType.IsCompatibleWith(vehicleType)).ToList();
-            if (compatibleSlots.Any())
+            var strategy = GetSlotCompatibilityStrategy(vehicleType);
+            // Get compatible slot types for the vehicle
+            var compatibleSlotTypes = strategy.GetCompatibleSlotTypes();
+
+            foreach (var slotType in compatibleSlotTypes)
             {
-                var bestMatchingSlot = compatibleSlots.OrderByDescending(s => s.SlotType).First();
-                bestMatchingSlot.IsAvailable = false;
-                _parkingSlotRepository.UpdateSlot(bestMatchingSlot);
-                _unitOfWork.CompleteAsync();
-                return bestMatchingSlot.SlotNumber;
+                var matchingSlots = availableSlots.Where(s => s.SlotType == slotType).ToList();
+
+                if (matchingSlots.Any())
+                {
+                    var bestMatchingSlot = matchingSlots.First();
+
+                    bestMatchingSlot.IsAvailable = false;
+
+                    await _parkingSlotRepository.UpdateSlot(bestMatchingSlot);
+                    await _unitOfWork.CompleteAsync();
+
+                    return bestMatchingSlot.SlotNumber;
+                }
             }
-            else
+            return -1;
+        }
+
+        private ISlotCompatibilityStrategy GetSlotCompatibilityStrategy(string vehicleType)
+        {
+            switch (vehicleType)
             {
-                return -1; // No suitable slots available
+                case "Hatchback":
+                    return new HatchbackSlotCompatibilityStrategy();
+                case "Sedan/Compact SUV":
+                    return new SedanCompactSuvSlotCompatibilityStrategy();
+                case "SUV or Large cars":
+                    return new SuvLargeCarsSlotCompatibilityStrategy();
+                default:
+                    throw new InvalidOperationException($"Invalid vehicle type: {vehicleType}");
             }
         }
     }

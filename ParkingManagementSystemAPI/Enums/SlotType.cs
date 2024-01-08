@@ -1,4 +1,4 @@
-﻿namespace ParkingManagementSystemAPI.Models
+﻿namespace ParkingManagementSystemAPI.Enums
 {
     public enum SlotType
     {

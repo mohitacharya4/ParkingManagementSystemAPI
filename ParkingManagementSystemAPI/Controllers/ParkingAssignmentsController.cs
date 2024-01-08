@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ParkingManagementSystemAPI.Services.Repositories;
-using ParkingManagementSystemAPI.Services;
+using ParkingManagementSystemAPI.Repositories.Interfaces;
+using ParkingManagementSystemAPI.UnitOfWork.Interfaces;
 
 namespace ParkingManagementSystemAPI.Controllers
 {
@@ -22,7 +22,7 @@ namespace ParkingManagementSystemAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetParkingAssignments()
         {
-            var assignments = await _parkingAssignmentRepository.GetAllAsync();  // Assuming a GetAllAsync method in the repository
+            var assignments = await _parkingAssignmentRepository.GetAllAsync();
             return Ok(assignments);
         }
     }

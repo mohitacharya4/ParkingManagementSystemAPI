@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingManagementSystemAPI.Data;
 using ParkingManagementSystemAPI.Models;
+using ParkingManagementSystemAPI.Repositories.Interfaces;
 
-namespace ParkingManagementSystemAPI.Services.Repositories
+namespace ParkingManagementSystemAPI.Repositories
 {
     public class ParkingSlotRepository : IParkingSlotRepository
     {
@@ -13,7 +14,12 @@ namespace ParkingManagementSystemAPI.Services.Repositories
             _context = context;
         }
 
-        public async Task<List<ParkingSlot>> GetAvailableSlots()
+        public async Task<IEnumerable<ParkingSlot>> GetAllSlots()
+        {
+            return await _context.ParkingSlots.AsNoTracking().ToListAsync();
+        }
+        
+        public async Task<IEnumerable<ParkingSlot>> GetAvailableSlots()
         {
             return await _context.ParkingSlots.Where(s => s.IsAvailable).ToListAsync();
         }

@@ -1,6 +1,6 @@
 ﻿using ParkingManagementSystemAPI.Models;
 
-namespace ParkingManagementSystemAPI.Services.Repositories
+namespace ParkingManagementSystemAPI.Repositories.Interfaces
 {
     public interface IVehicleTypeRepository
     {

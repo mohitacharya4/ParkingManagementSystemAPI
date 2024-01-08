@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingManagementSystemAPI.Data;
 using ParkingManagementSystemAPI.Models;
+using ParkingManagementSystemAPI.Repositories.Interfaces;
 
-namespace ParkingManagementSystemAPI.Services.Repositories
+namespace ParkingManagementSystemAPI.Repositories
 {
     public class VehicleTypeRepository : IVehicleTypeRepository
     {

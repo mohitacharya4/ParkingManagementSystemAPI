@@ -1,6 +1,7 @@
 ﻿using ParkingManagementSystemAPI.Data;
+using ParkingManagementSystemAPI.UnitOfWork.Interfaces;
 
-namespace ParkingManagementSystemAPI.Services
+namespace ParkingManagementSystemAPI.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

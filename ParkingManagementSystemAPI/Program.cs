@@ -1,8 +1,13 @@
 
 using Microsoft.EntityFrameworkCore;
 using ParkingManagementSystemAPI.Data;
+using ParkingManagementSystemAPI.Repositories;
+using ParkingManagementSystemAPI.Repositories.Interfaces;
 using ParkingManagementSystemAPI.Services;
-using ParkingManagementSystemAPI.Services.Repositories;
+using ParkingManagementSystemAPI.Services.Interfaces;
+using ParkingManagementSystemAPI.UnitOfWork.Interfaces;
+using UnitOfWork = ParkingManagementSystemAPI.UnitOfWork;
+
 
 namespace ParkingManagementSystemAPI
 {
@@ -19,30 +24,34 @@ namespace ParkingManagementSystemAPI
             builder.Services.AddScoped<IParkingSlotRepository, ParkingSlotRepository>();
             builder.Services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
             builder.Services.AddScoped<IParkingAssignmentRepository, ParkingAssignmentRepository>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<SlotAssignmentService>();
-
-
-            // Add services to the container.
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+            builder.Services.AddScoped<ISlotAssignmentService,SlotAssignmentService>();
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200");
+                });
+            });
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CorsPolicy");
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

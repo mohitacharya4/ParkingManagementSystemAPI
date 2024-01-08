@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ParkingManagementSystemAPI.Data;
 using ParkingManagementSystemAPI.Models;
+using ParkingManagementSystemAPI.Repositories.Interfaces;
 
-namespace ParkingManagementSystemAPI.Services.Repositories
+namespace ParkingManagementSystemAPI.Repositories
 {
     public class ParkingAssignmentRepository : IParkingAssignmentRepository
     {
@@ -21,6 +22,13 @@ namespace ParkingManagementSystemAPI.Services.Repositories
         public async Task<ParkingAssignment> GetByIdAsync(int assignmentId)
         {
             return await _context.ParkingAssignments.FindAsync(assignmentId);
+        }
+        
+        public async Task<ParkingAssignment>? GetActiveAssignmentForSlot(int slotId)
+        {
+            return await _context.ParkingAssignments
+            .Where(assignment => assignment.SlotId == slotId && assignment.ExitTime == null)
+            .FirstOrDefaultAsync();
         }
 
         public async Task AddAsync(ParkingAssignment assignment)

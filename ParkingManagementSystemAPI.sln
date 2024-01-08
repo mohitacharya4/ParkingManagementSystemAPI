@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingManagementSystemAPI", "ParkingManagementSystemAPI\ParkingManagementSystemAPI.csproj", "{7D14EB60-96A9-40A5-AA76-79FF6F2236E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkingManagementSystemAPI.Tests", "ParkingManagementSystemAPI.Tests\ParkingManagementSystemAPI.Tests.csproj", "{FB94B791-E98C-4F61-9604-734853B9D83F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7D14EB60-96A9-40A5-AA76-79FF6F2236E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D14EB60-96A9-40A5-AA76-79FF6F2236E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D14EB60-96A9-40A5-AA76-79FF6F2236E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB94B791-E98C-4F61-9604-734853B9D83F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB94B791-E98C-4F61-9604-734853B9D83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB94B791-E98C-4F61-9604-734853B9D83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB94B791-E98C-4F61-9604-734853B9D83F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

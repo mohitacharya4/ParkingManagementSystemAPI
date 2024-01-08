@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ParkingManagementSystemAPI.Enums;
 
 namespace ParkingManagementSystemAPI.Models
 {

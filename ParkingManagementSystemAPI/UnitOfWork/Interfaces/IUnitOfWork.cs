@@ -1,4 +1,4 @@
-﻿namespace ParkingManagementSystemAPI.Services
+﻿namespace ParkingManagementSystemAPI.UnitOfWork.Interfaces
 {
     public interface IUnitOfWork
     {
